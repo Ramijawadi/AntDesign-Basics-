@@ -12,18 +12,35 @@ import {
   Switch,
   theme,
 } from "antd";
+import { useState } from "react";
 function App() {
+
+  const [currentTheme, setCurrentTheme] = useState('light');
+
+
+  const LightTheme = {
+    colorPrimary: "green",
+    colorTextBase: "green",
+    colorTextLightSolid: "white"
+
+  }
+
+  const darkTheme = {
+
+    colorPrimary: "black",
+    colorTextBase: "black",
+    colorTextLightSolid: "white"
+
+  }
+
   return (
     <div className="App">
       <ConfigProvider
         theme={{
-          token: {
-            colorPrimary: "green",
-            colorTextBase:"green"
-          },
+          token:currentTheme === 'light' ? LightTheme : darkTheme ,
 
-          components : {
-            Checkbox :{
+          components: {
+            Checkbox: {
 
               colorPrimary: "purple",
             }
@@ -31,6 +48,12 @@ function App() {
         }}
       >
         <Space direction="vertical" size={12}>
+
+<Radio.Group value={currentTheme} onChange={(e) => setCurrentTheme(e.target.value)}>
+<Radio value={"dark"}>Dark</Radio>
+<Radio value={"light"}>Light</Radio>
+</Radio.Group>
+
           <Button type="primary">Theme Button</Button>
           <Radio>Radio Green Theme </Radio>
           <ConfigProvider
@@ -44,13 +67,14 @@ function App() {
           <ConfigProvider
             theme={{
               inherit: true,
-              token : {
-           colorPrimary:'purple'
-            }}}
+              token: {
+                colorPrimary: 'purple'
+              }
+            }}
           >
             <Radio>Radio purple theme</Radio>
           </ConfigProvider>
-<Switch checkedChildren="ON" unCheckedChildren="OFF" />
+          <Switch checkedChildren="ON" unCheckedChildren="OFF" />
           <Checkbox>Checkbox</Checkbox>
           <Input placeholder="write here ..." />
           <Select
@@ -77,8 +101,8 @@ function App() {
 
 function Para() {
 
-  const {token} = theme.useToken();
-  return <h3 style={{color : token.colorPrimary}} >H3 using Token theme </h3>
+  const { token } = theme.useToken();
+  return <h3 style={{ color: token.colorPrimary }} >H3 using Token theme </h3>
 
 }
 export default App;
